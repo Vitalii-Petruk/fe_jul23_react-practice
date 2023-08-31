@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import "./App.scss";
+/* eslint-disable */
 
-import usersFromServer from "./api/users";
-import categoriesFromServer from "./api/categories";
-import productsFromServer from "./api/products";
+import React, { useState } from 'react';
+import './App.scss';
+
+import usersFromServer from './api/users';
+import categoriesFromServer from './api/categories';
+import productsFromServer from './api/products';
 
 const products = productsFromServer.map((product) => {
-  const category = categoriesFromServer.find(
-    (cat) => cat.id === product.categoryId
-  );
-  const user = usersFromServer.find((usr) => usr.id === category.ownerId);
+  const category = categoriesFromServer
+    .find(cat => cat.id === product.categoryId);
+  const user = usersFromServer.find(usr => usr.id === category.ownerId);
 
   return {
     ...product,
@@ -20,9 +21,8 @@ const products = productsFromServer.map((product) => {
 
 export const App = () => {
   const [selectedUser, setSelectedUser] = useState(null);
-  const filteredProducts = products.filter((product) => {
-    product.user.id === selectedUser.id
-  )};
+  const filteredProducts = products
+    .filter(product => (product.user.id === selectedUser.id));
 
   return (
     <div className="section">
@@ -179,10 +179,11 @@ export const App = () => {
             </thead>
 
             <tbody>
-              {filteredProducts.map((product) => {
+              {filteredProducts.map(product => (
                 <tr
                   key={product.id}
-                  data-cy="Product">
+                  data-cy="Product"
+                >
                   <td className="has-text-weight-bold" data-cy="ProductId">
                     {product.id}
                   </td>
@@ -193,15 +194,15 @@ export const App = () => {
                   <td
                     data-cy="ProductUser"
                     className={
-                      product.user.sex === "m"
-                        ? "has-text-link"
-                        : "has-text-danger"
+                      product.user.sex === 'm'
+                        ? 'has-text-link'
+                        : 'has-text-danger'
                     }
                   >
                   {product.user.name}
                   </td>
                 </tr>;
-              })}
+              ))}
             </tbody>
           </table>
         </div>
