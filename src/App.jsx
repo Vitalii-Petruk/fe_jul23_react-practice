@@ -201,7 +201,7 @@ export const App = () => {
                   >
                   {product.user.name}
                   </td>
-                </tr>;
+                </tr>
               ))}
             </tbody>
           </table>
