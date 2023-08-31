@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 
-// import usersFromServer from './api/users';
-// import categoriesFromServer from './api/categories';
-// import productsFromServer from './api/products';
+import usersFromServer from './api/users';
+import categoriesFromServer from './api/categories';
+import productsFromServer from './api/products';
 
-// const products = productsFromServer.map((product) => {
-//   const category = null; // find by product.categoryId
-//   const user = null; // find by category.ownerId
+const products = productsFromServer.map((product) => {
+  const category = categoriesFromServer.find.(
+    (category) => category.id === product.categoryId,
+  );
 
-//   return null;
-// });
+  const user = usersFromServer.find(user => user.id === category.ownerId);
 
-export const App = () => (
-  <div className="section">
+  return {...product, category, user};
+});
+
+export const App = () => {
+  const [selectedUser, setselectedUser] = useState(null);
+
+  const filteredProducts = products.filter(product =>
+    (product.id === selectedUser.id));
+
+  return (
+    <div className="section">
     <div className="container">
       <h1 className="title">Product Categories</h1>
 
@@ -192,56 +201,33 @@ export const App = () => (
           </thead>
 
           <tbody>
-            <tr data-cy="Product">
-              <td className="has-text-weight-bold" data-cy="ProductId">
-                1
-              </td>
-
-              <td data-cy="ProductName">Milk</td>
-              <td data-cy="ProductCategory">🍺 - Drinks</td>
-
-              <td
-                data-cy="ProductUser"
-                className="has-text-link"
-              >
-                Max
-              </td>
-            </tr>
-
-            <tr data-cy="Product">
+              {filteredProducts.map((product) => {
+                <tr data-cy="Product">
               <td className="has-text-weight-bold" data-cy="ProductId">
                 2
               </td>
 
-              <td data-cy="ProductName">Bread</td>
-              <td data-cy="ProductCategory">🍞 - Grocery</td>
+                  <td data-cy="ProductName">{product.name}</td>
+                  <td data-cy="ProductCategory">{ product.category.name}</td>
 
               <td
                 data-cy="ProductUser"
-                className="has-text-danger"
+                    className={product.user.sex === 'm'
+                      ? 'has-text-link'
+                      : 'has-text-danger'
+                    }
               >
                 Anna
               </td>
             </tr>
-
-            <tr data-cy="Product">
-              <td className="has-text-weight-bold" data-cy="ProductId">
-                3
-              </td>
-
-              <td data-cy="ProductName">iPhone</td>
-              <td data-cy="ProductCategory">💻 - Electronics</td>
-
-              <td
-                data-cy="ProductUser"
-                className="has-text-link"
-              >
-                Roma
-              </td>
-            </tr>
+              }
+            )
+              }
           </tbody>
         </table>
       </div>
     </div>
   </div>
 );
+
+}
